@@ -86,7 +86,7 @@ namespace APIEC
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "APIEC v1"));
             }
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection();  // redirecting https requests
 
             app.UseRouting();
 
@@ -94,7 +94,7 @@ namespace APIEC
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers();  // mapping to right controller
             });
         }
     }

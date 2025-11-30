@@ -23,22 +23,36 @@ namespace APIEC.Controllers
         private readonly UserManager<EmployeeEntity> _userManager;
         private readonly IConfiguration _configuration;
 
-        public AuthController(UserManager<EmployeeEntity> userManager, IConfiguration configuration)
+        //public AuthController(UserManager<EmployeeEntity> userManager, IConfiguration configuration)
+        //{
+        //    _userManager = userManager;
+        //    _configuration = configuration;
+        //}
+
+        public AuthController(IConfiguration configuration)
         {
-            _userManager = userManager;
             _configuration = configuration;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUser.Request request)
         {
-            var user = await _userManager.FindByEmailAsync(request.email);
-            if (user is null)
-                return Unauthorized();
+            //var user = await _userManager.FindByEmailAsync(request.email);
+            //if (user is null)
+            //    return Unauthorized();
 
             // generate JWT logic here
 
-            var roles = await _userManager.GetRolesAsync(user);
+            //var roles = await _userManager.GetRolesAsync(user);
+
+            var roles = new EmployeeEntity
+            {
+                Email = "email",
+                Id = Guid.NewGuid(),
+                Name = "Neeraj",
+                Phone = "7899",
+                Salary = 22
+            };
 
             var signingKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!));
@@ -46,12 +60,12 @@ namespace APIEC.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Name ?? ""),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? "")
+                new Claim(JwtRegisteredClaimNames.Sub, "Neeraj"?? ""),
+                new Claim(JwtRegisteredClaimNames.Email, "emial" ?? "")
             };
 
             // add roles to claims
-            claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+            //claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
 
             //List<Claim> claims = [
